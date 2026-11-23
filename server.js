@@ -352,6 +352,11 @@ app.get('/api/character/:id', async (req, res) => {
     }
 });
 
+// Google Search Console Verification Route
+app.get('/googleffc40cc3c21829d3.html', (req, res) => {
+    res.type('text/html').send('google-site-verification: googleffc40cc3c21829d3.html');
+});
+
 // Serve Frontend HTML File (Catch-all for SPA)
 app.use((req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
