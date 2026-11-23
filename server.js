@@ -4,11 +4,6 @@
  * - Serves the clean frontend (index.html)
  * - Hides all GraphQL queries, API endpoints, and caching logic on the server
  * - Exposes clean REST endpoints (/api/*) for the browser
- *
- * Setup & Run:
- *   npm init -y
- *   npm install express
- *   node server.js
  */
 
 const express = require('express');
@@ -359,13 +354,10 @@ app.get('/api/character/:id', async (req, res) => {
 
 // Serve Frontend HTML File (Catch-all for SPA)
 app.use((req, res) => {
-    res.sendFile(path.join(__dirname, 'aniwiki.html'));
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-if (process.env.NODE_ENV !== 'production') {
-    app.listen(PORT, () => {
-        console.log(`AniWiki Full-Stack Server running at http://localhost:${PORT}`);
-    });
-}
-
-module.exports = app;
+// Start Server (Works in Render Production & Local)
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`AniWiki Full-Stack Server running on port ${PORT}`);
+});
