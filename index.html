@@ -1,0 +1,1821 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AniWiki — Complete Anime Encyclopedia & Schedule</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        obsidian: '#0b0e14',
+                        surface: '#131822',
+                        surfaceHover: '#19202e',
+                        borderDark: '#222b3c',
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        body {
+            background-color: #0b0e14;
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Custom sleek scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0b0e14;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #242f42;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3b4c6b;
+        }
+
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body class="bg-obsidian text-slate-200 min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
+
+    <!-- Sticky Top Header & Navigation -->
+    <header class="sticky top-0 z-40 bg-obsidian/90 backdrop-blur-xl border-b border-borderDark">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between py-3.5 gap-3">
+
+                <!-- Brand Logo -->
+                <div class="flex items-center justify-between">
+                    <button onclick="switchTab('encyclopedia')" class="flex items-center gap-3 text-left group">
+                        <div
+                            class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-indigo-500/25 group-hover:scale-105 transition-transform">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"
+                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xl font-extrabold tracking-tight text-white">Ani<span
+                                        class="text-cyan-400">Wiki</span></span>
+                                <span
+                                    class="text-[10px] font-mono uppercase px-2 py-0.5 rounded-full bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">Live
+                                    DB</span>
+                            </div>
+                            <p class="text-xs text-slate-400">Complete Anime Encyclopedia & Official Schedule</p>
+                        </div>
+                    </button>
+
+                </div>
+
+                <!-- Primary Navigation Tabs -->
+                <nav
+                    class="flex items-center gap-1.5 bg-surface p-1.5 rounded-xl border border-borderDark overflow-x-auto">
+                    <button id="nav-encyclopedia" onclick="switchTab('encyclopedia')"
+                        class="nav-tab flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-semibold whitespace-nowrap transition-all bg-indigo-600 text-white shadow-md shadow-indigo-600/20">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                        </svg>
+                        All Anime
+                    </button>
+                    <button id="nav-characters" onclick="switchTab('characters')"
+                        class="nav-tab flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-semibold whitespace-nowrap transition-all text-slate-400 hover:text-white hover:bg-surfaceHover">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        Characters
+                    </button>
+                    <button id="nav-manga" onclick="switchTab('manga')"
+                        class="nav-tab flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-semibold whitespace-nowrap transition-all text-slate-400 hover:text-white hover:bg-surfaceHover">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                        Manga
+                    </button>
+                    <button id="nav-upcoming" onclick="switchTab('upcoming')"
+                        class="nav-tab flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-semibold whitespace-nowrap transition-all text-slate-400 hover:text-white hover:bg-surfaceHover">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        Upcoming & Radar
+                    </button>
+                    <button id="nav-random" onclick="openRandomAnime()" title="Discover a Random Anime"
+                        class="group flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-bold whitespace-nowrap transition-all bg-gradient-to-r from-cyan-500/20 to-indigo-500/20 hover:from-cyan-500 hover:to-indigo-600 text-cyan-300 hover:text-white border border-cyan-500/40 hover:border-transparent shadow-sm">
+                        <svg id="nav-dice-icon" class="w-4 h-4 transition-transform duration-500 group-hover:rotate-180"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="4" ry="4"></rect>
+                            <circle cx="8.5" cy="8.5" r="1.2" fill="currentColor"></circle>
+                            <circle cx="15.5" cy="8.5" r="1.2" fill="currentColor"></circle>
+                            <circle cx="12" cy="12" r="1.2" fill="currentColor"></circle>
+                            <circle cx="8.5" cy="15.5" r="1.2" fill="currentColor"></circle>
+                            <circle cx="15.5" cy="15.5" r="1.2" fill="currentColor"></circle>
+                        </svg>
+                        <span>Random</span>
+                    </button>
+                </nav>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- ===================================================================== -->
+        <!-- SECTION 1: ALL ANIME ENCYCLOPEDIA (CLASSIC TO LATEST)                 -->
+        <!-- ===================================================================== -->
+        <section id="section-encyclopedia" class="space-y-6">
+
+            <!-- Section Hero & Search Controls -->
+            <div class="bg-surface border border-borderDark rounded-2xl p-5 sm:p-6 shadow-xl">
+                <div class="mb-5">
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Complete Anime
+                        Encyclopedia</h1>
+                    <p class="text-sm text-slate-400 mt-1">Explore full histories, start & end dates, season relations,
+                        cast A–Z, and official streaming availability from classic eras to current seasons.</p>
+                </div>
+
+                <!-- Search & Filter Bar -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3">
+                    <!-- Search Input -->
+                    <div class="lg:col-span-5 relative">
+                        <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <input type="text" id="enc-search"
+                            placeholder="Search any anime (e.g., Naruto, Frieren, Monster, One Piece)..."
+                            class="w-full bg-obsidian border border-borderDark focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-slate-500 outline-none transition" />
+                    </div>
+
+                    <!-- Category / Era Sort -->
+                    <div class="lg:col-span-3">
+                        <select id="enc-sort"
+                            class="w-full bg-obsidian border border-borderDark focus:border-indigo-500 rounded-xl px-3.5 py-2.5 text-sm text-slate-200 outline-none">
+                            <option value="POPULARITY_DESC">All-Time Most Popular</option>
+                            <option value="SCORE_DESC">Highest Rated Classics & Hits</option>
+                            <option value="TRENDING_DESC">Currently Trending</option>
+                            <option value="START_DATE_DESC">Newest Releases First</option>
+                            <option value="START_DATE">Oldest / Classic Era First (1960s+)</option>
+                        </select>
+                    </div>
+
+                    <!-- Genre Filter -->
+                    <div class="lg:col-span-2">
+                        <select id="enc-genre"
+                            class="w-full bg-obsidian border border-borderDark focus:border-indigo-500 rounded-xl px-3.5 py-2.5 text-sm text-slate-200 outline-none">
+                            <option value="">All Genres</option>
+                            <option value="Action">Action</option>
+                            <option value="Adventure">Adventure</option>
+                            <option value="Comedy">Comedy</option>
+                            <option value="Drama">Drama</option>
+                            <option value="Fantasy">Fantasy</option>
+                            <option value="Horror">Horror</option>
+                            <option value="Mystery">Mystery</option>
+                            <option value="Psychological">Psychological</option>
+                            <option value="Romance">Romance</option>
+                            <option value="Sci-Fi">Sci-Fi</option>
+                            <option value="Slice of Life">Slice of Life</option>
+                            <option value="Sports">Sports</option>
+                            <option value="Supernatural">Supernatural</option>
+                            <option value="Thriller">Thriller</option>
+                        </select>
+                    </div>
+
+                    <!-- Year Filter -->
+                    <div class="lg:col-span-2">
+                        <select id="enc-year"
+                            class="w-full bg-obsidian border border-borderDark focus:border-indigo-500 rounded-xl px-3.5 py-2.5 text-sm text-slate-200 outline-none">
+                            <option value="">All Years</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Quick Status Pills -->
+                <div class="flex flex-wrap items-center gap-2 mt-4 pt-4 border-t border-borderDark/70">
+                    <span class="text-xs font-medium text-slate-400 mr-1">Filter by Status:</span>
+                    <button onclick="setEncStatus('')" data-status=""
+                        class="enc-status-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white transition">All
+                        Anime</button>
+                    <button onclick="setEncStatus('RELEASING')" data-status="RELEASING"
+                        class="enc-status-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-obsidian text-slate-300 hover:bg-surfaceHover border border-borderDark transition">Currently
+                        Airing</button>
+                    <button onclick="setEncStatus('FINISHED')" data-status="FINISHED"
+                        class="enc-status-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-obsidian text-slate-300 hover:bg-surfaceHover border border-borderDark transition">Completed
+                        / Finished</button>
+                    <button onclick="setEncStatus('NOT_YET_RELEASED')" data-status="NOT_YET_RELEASED"
+                        class="enc-status-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-obsidian text-slate-300 hover:bg-surfaceHover border border-borderDark transition">Upcoming
+                        Seasons</button>
+                </div>
+            </div>
+
+            <!-- Error Banner (Hidden unless needed) -->
+            <div id="enc-error"
+                class="hidden bg-rose-500/10 border border-rose-500/30 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div class="flex items-center gap-3 text-rose-300 text-sm">
+                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span id="enc-error-text">Live API rate-limited. Showing cached encyclopedia entries.</span>
+                </div>
+                <button onclick="loadEncyclopedia(true)"
+                    class="px-4 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-semibold transition">Retry
+                    Live API</button>
+            </div>
+
+            <!-- Encyclopedia Anime Grid -->
+            <div id="enc-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-5">
+                <!-- Populated dynamically -->
+            </div>
+
+            <!-- Load More Button -->
+            <div class="flex justify-center pt-4">
+                <button id="enc-load-more" onclick="loadEncyclopedia(false)"
+                    class="px-6 py-3 rounded-xl bg-surface hover:bg-surfaceHover border border-borderDark text-sm font-semibold text-white shadow-lg transition flex items-center gap-2">
+                    <span>Load More Anime</span>
+                    <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+            </div>
+        </section>
+
+        <!-- ===================================================================== -->
+        <!-- SECTION 2: UPCOMING ANIME & LIVE AIRING SCHEDULE                      -->
+        <!-- ===================================================================== -->
+        <section id="section-upcoming" class="hidden space-y-6">
+
+            <!-- Upcoming Header -->
+            <div
+                class="bg-gradient-to-r from-surface via-[#151d2e] to-surface border border-borderDark rounded-2xl p-5 sm:p-6 shadow-xl">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <span
+                                class="px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-cyan-500/15 text-cyan-400 border border-cyan-500/30 flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping"></span>
+                                Auto-Detection Radar
+                            </span>
+                            <span class="text-xs text-slate-400">Confirmed Dates, TBA Announcements & Manga
+                                Adaptations</span>
+                        </div>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Upcoming Anime, Manga
+                            & Release Radar</h2>
+                        <p class="text-sm text-slate-400 mt-1">Automatically detects newly announced anime & manga
+                            (including unconfirmed TBA release dates), premiere schedules, and next-episode countdowns.
+                        </p>
+                    </div>
+
+                    <!-- Sub-filter for Auto-Detected Announcements & Countdowns -->
+                    <div
+                        class="flex flex-wrap items-center gap-1.5 bg-obsidian p-1.5 rounded-xl border border-borderDark shrink-0">
+                        <button id="up-btn-newly" onclick="switchUpcomingMode('NEWLY_ANNOUNCED')"
+                            class="px-3 py-2 rounded-lg text-xs font-semibold bg-cyan-600 text-white transition">
+                            Newly Announced (TBA & Confirmed)
+                        </button>
+                        <button id="up-btn-upcoming" onclick="switchUpcomingMode('NOT_YET_RELEASED')"
+                            class="px-3 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition">
+                            Popular Upcoming
+                        </button>
+                        <button id="up-btn-manga-up" onclick="switchUpcomingMode('UPCOMING_MANGA')"
+                            class="px-3 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition">
+                            Upcoming Manga
+                        </button>
+                        <button id="up-btn-airing" onclick="switchUpcomingMode('RELEASING')"
+                            class="px-3 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition">
+                            Airing Countdowns
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upcoming / Schedule Cards Grid -->
+            <div id="upcoming-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Populated dynamically -->
+            </div>
+
+            <div class="flex justify-center pt-4">
+                <button id="up-load-more" onclick="loadUpcoming(false)"
+                    class="px-6 py-3 rounded-xl bg-surface hover:bg-surfaceHover border border-borderDark text-sm font-semibold text-white shadow-lg transition">
+                    Load More Detected Releases
+                </button>
+            </div>
+        </section>
+
+        <!-- ===================================================================== -->
+        <!-- SECTION 3: MANGA ENCYCLOPEDIA (MANGA, MANHWA & LIGHT NOVELS)          -->
+        <!-- ===================================================================== -->
+        <section id="section-manga" class="hidden space-y-6">
+
+            <!-- Manga Header & Filter Controls -->
+            <div class="bg-surface border border-borderDark rounded-2xl p-5 sm:p-6 shadow-xl">
+                <div class="mb-5">
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Complete Manga & Novel
+                        Encyclopedia</h2>
+                    <p class="text-sm text-slate-400 mt-1">Explore manga, manhwa, and light novels—complete with chapter
+                        & volume counts, serialization dates, anime adaptations, and official reading platforms.</p>
+                </div>
+
+                <!-- Manga Search & Filter Bar -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3">
+                    <div class="lg:col-span-5 relative">
+                        <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <input type="text" id="manga-search"
+                            placeholder="Search any manga (e.g., Berserk, Vagabond, Solo Leveling)..."
+                            class="w-full bg-obsidian border border-borderDark focus:border-purple-500 focus:ring-1 focus:ring-purple-500 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-slate-500 outline-none transition" />
+                    </div>
+
+                    <div class="lg:col-span-3">
+                        <select id="manga-sort"
+                            class="w-full bg-obsidian border border-borderDark focus:border-purple-500 rounded-xl px-3.5 py-2.5 text-sm text-slate-200 outline-none">
+                            <option value="POPULARITY_DESC">Most Popular Manga</option>
+                            <option value="SCORE_DESC">Highest Rated Masterpieces</option>
+                            <option value="TRENDING_DESC">Currently Trending</option>
+                            <option value="ID_DESC">Latest Announced / Added</option>
+                            <option value="START_DATE_DESC">Newest Serialization First</option>
+                        </select>
+                    </div>
+
+                    <div class="lg:col-span-2">
+                        <select id="manga-genre"
+                            class="w-full bg-obsidian border border-borderDark focus:border-purple-500 rounded-xl px-3.5 py-2.5 text-sm text-slate-200 outline-none">
+                            <option value="">All Genres</option>
+                            <option value="Action">Action</option>
+                            <option value="Adventure">Adventure</option>
+                            <option value="Comedy">Comedy</option>
+                            <option value="Drama">Drama</option>
+                            <option value="Fantasy">Fantasy</option>
+                            <option value="Horror">Horror</option>
+                            <option value="Mystery">Mystery</option>
+                            <option value="Psychological">Psychological</option>
+                            <option value="Romance">Romance</option>
+                            <option value="Sci-Fi">Sci-Fi</option>
+                            <option value="Slice of Life">Slice of Life</option>
+                            <option value="Sports">Sports</option>
+                            <option value="Supernatural">Supernatural</option>
+                        </select>
+                    </div>
+
+                    <div class="lg:col-span-2">
+                        <select id="manga-format"
+                            class="w-full bg-obsidian border border-borderDark focus:border-purple-500 rounded-xl px-3.5 py-2.5 text-sm text-slate-200 outline-none">
+                            <option value="">All Formats</option>
+                            <option value="MANGA">Manga (Japan)</option>
+                            <option value="NOVEL">Light Novel</option>
+                            <option value="ONE_SHOT">One-Shot</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Manga Status Pills -->
+                <div class="flex flex-wrap items-center gap-2 mt-4 pt-4 border-t border-borderDark/70">
+                    <span class="text-xs font-medium text-slate-400 mr-1">Publishing Status:</span>
+                    <button onclick="setMangaStatus('')" data-status=""
+                        class="manga-status-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-purple-600 text-white transition">All
+                        Manga</button>
+                    <button onclick="setMangaStatus('RELEASING')" data-status="RELEASING"
+                        class="manga-status-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-obsidian text-slate-300 hover:bg-surfaceHover border border-borderDark transition">Currently
+                        Publishing</button>
+                    <button onclick="setMangaStatus('FINISHED')" data-status="FINISHED"
+                        class="manga-status-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-obsidian text-slate-300 hover:bg-surfaceHover border border-borderDark transition">Completed</button>
+                    <button onclick="setMangaStatus('NOT_YET_RELEASED')" data-status="NOT_YET_RELEASED"
+                        class="manga-status-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-obsidian text-slate-300 hover:bg-surfaceHover border border-borderDark transition">Upcoming
+                        / Announced</button>
+                </div>
+            </div>
+
+            <!-- Manga Grid -->
+            <div id="manga-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-5">
+                <!-- Populated dynamically -->
+            </div>
+
+            <div class="flex justify-center pt-4">
+                <button id="manga-load-more" onclick="loadManga(false)"
+                    class="px-6 py-3 rounded-xl bg-surface hover:bg-surfaceHover border border-borderDark text-sm font-semibold text-white shadow-lg transition flex items-center gap-2">
+                    <span>Load More Manga</span>
+                    <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+            </div>
+        </section>
+
+        <!-- ===================================================================== -->
+        <!-- SECTION 4: CHARACTERS A–Z DIRECTORY                                   -->
+        <!-- ===================================================================== -->
+        <!-- SECTION 3: CHARACTERS A–Z DIRECTORY                                   -->
+        <!-- ===================================================================== -->
+        <section id="section-characters" class="hidden space-y-6">
+
+            <!-- Character Directory Controls -->
+            <div class="bg-surface border border-borderDark rounded-2xl p-5 sm:p-6 shadow-xl space-y-5">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Characters A–Z
+                            Encyclopedia</h2>
+                        <p class="text-sm text-slate-400 mt-1">Browse anime characters alphabetically from A to Z or
+                            search any hero, villain, or supporting cast member for full biographies and voice actors.
+                        </p>
+                    </div>
+
+                    <!-- Character Search Bar -->
+                    <div class="w-full md:w-80 relative">
+                        <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <input type="text" id="char-search"
+                            placeholder="Search character (e.g., Lelouch, Zoro, Gojo)..."
+                            class="w-full bg-obsidian border border-borderDark focus:border-cyan-500 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-slate-500 outline-none transition" />
+                    </div>
+                </div>
+
+                <!-- Interactive A-to-Z Alphabet Filter Bar -->
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Filter by Starting
+                            Letter (A – Z):</span>
+                        <span id="char-active-filter-label" class="text-xs font-mono text-cyan-400">Showing: All Popular
+                            Characters</span>
+                    </div>
+                    <div id="alphabet-bar" class="flex flex-wrap gap-1.5">
+                        <!-- Buttons A-Z injected via JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Characters Grid -->
+            <div id="char-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                <!-- Populated dynamically -->
+            </div>
+
+            <div class="flex justify-center pt-4">
+                <button id="char-load-more" onclick="loadCharacters(false)"
+                    class="px-6 py-3 rounded-xl bg-surface hover:bg-surfaceHover border border-borderDark text-sm font-semibold text-white shadow-lg transition">
+                    Load More Characters
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ======================================================================= -->
+    <!-- MODAL 1: WIKIPEDIA-STYLE ANIME ENCYCLOPEDIA DETAIL DRAWER / MODAL       -->
+    <!-- ======================================================================= -->
+    <div id="anime-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/80 backdrop-blur-md p-2 sm:p-6">
+        <div
+            class="relative max-w-5xl mx-auto bg-surface border border-borderDark rounded-2xl shadow-2xl overflow-hidden my-4">
+
+            <!-- Top Close Bar -->
+            <button onclick="closeAnimeModal()"
+                class="absolute top-4 right-4 z-30 w-10 h-10 rounded-full bg-obsidian/90 hover:bg-rose-600 text-white border border-borderDark flex items-center justify-center transition shadow-lg"
+                aria-label="Close modal">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+
+            <!-- Modal Dynamic Content -->
+            <div id="anime-modal-content">
+                <!-- Injected dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- MODAL 2: CHARACTER BIOGRAPHY & VOICE ACTORS MODAL                       -->
+    <!-- ======================================================================= -->
+    <div id="char-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/80 backdrop-blur-md p-3 sm:p-6">
+        <div
+            class="relative max-w-3xl mx-auto bg-surface border border-borderDark rounded-2xl shadow-2xl overflow-hidden my-8">
+            <button onclick="closeCharModal()"
+                class="absolute top-4 right-4 z-30 w-9 h-9 rounded-full bg-obsidian/90 hover:bg-rose-600 text-white border border-borderDark flex items-center justify-center transition"
+                aria-label="Close character modal">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <div id="char-modal-content">
+                <!-- Injected dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-borderDark bg-obsidian/90 mt-12 py-6">
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+            <div>
+                <span class="font-bold text-slate-200">AniWiki</span> — Complete Anime Encyclopedia, Season Timeline &
+                Official Streaming Directory.
+            </div>
+            <div class="text-center sm:text-right">
+                Metadata & schedules powered by <span class="text-cyan-400 font-medium">AniList GraphQL API</span>. Only
+                official licensed streaming platforms are listed.
+            </div>
+        </div>
+    </footer>
+
+    <!-- ======================================================================= -->
+    <!-- JAVASCRIPT APPLICATION LOGIC                                            -->
+    <!-- ======================================================================= -->
+    <script>
+        // Clean Backend API Base Path (All GraphQL queries & upstream logic live in server.js)
+        const API_BASE = '/api';
+
+        // Official Streaming Platform Whitelist & Styling Metadata
+        const OFFICIAL_PLATFORMS = {
+            'Crunchyroll': { color: 'bg-orange-500/15 text-orange-300 border-orange-500/30', badge: 'Official Stream' },
+            'Netflix': { color: 'bg-red-500/15 text-red-300 border-red-500/30', badge: 'Official Stream' },
+            'Amazon Prime Video': { color: 'bg-sky-500/15 text-sky-300 border-sky-500/30', badge: 'Official Stream' },
+            'Prime Video': { color: 'bg-sky-500/15 text-sky-300 border-sky-500/30', badge: 'Official Stream' },
+            'Hulu': { color: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30', badge: 'Official Stream' },
+            'Disney Plus': { color: 'bg-blue-500/15 text-blue-300 border-blue-500/30', badge: 'Official Stream' },
+            'YouTube': { color: 'bg-rose-500/15 text-rose-300 border-rose-500/30', badge: 'Official Channel / Muse / Ani-One' },
+            'Bilibili': { color: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30', badge: 'Official Stream' },
+            'Bilibili Global': { color: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30', badge: 'Official Stream' },
+            'HIDIVE': { color: 'bg-indigo-500/15 text-indigo-300 border-indigo-500/30', badge: 'Official Stream' },
+            'Tubi TV': { color: 'bg-amber-500/15 text-amber-300 border-amber-500/30', badge: 'Free Official Stream' },
+            'MANGA Plus': { color: 'bg-rose-500/15 text-rose-300 border-rose-500/30', badge: 'Official Reader' },
+            'Viz': { color: 'bg-red-500/15 text-red-300 border-red-500/30', badge: 'Official Reader' },
+            'Kodansha': { color: 'bg-blue-500/15 text-blue-300 border-blue-500/30', badge: 'Official Reader' },
+            'Webtoon': { color: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30', badge: 'Official Reader' },
+            'Official Site': { color: 'bg-slate-500/15 text-slate-300 border-slate-500/30', badge: 'Official Website' }
+        };
+
+        // Fallback dataset in case offline or rate-limited
+        const FALLBACK_ANIME = [
+            {
+                id: 154587,
+                type: 'ANIME',
+                title: { romaji: 'Sousou no Frieren', english: "Frieren: Beyond Journey's End", native: '葬送のフリーレン' },
+                coverImage: { extraLarge: 'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx154587-gHSraOSa0nBG.jpg' },
+                bannerImage: 'https://s4.anilist.co/file/anilistcdn/media/anime/banner/154587-ivjj923k4903.jpg',
+                format: 'TV',
+                status: 'FINISHED',
+                episodes: 28,
+                duration: 24,
+                season: 'FALL',
+                seasonYear: 2023,
+                averageScore: 91,
+                genres: ['Adventure', 'Drama', 'Fantasy'],
+                source: 'MANGA',
+                startDate: { year: 2023, month: 9, day: 29 },
+                endDate: { year: 2024, month: 3, day: 22 },
+                studios: { nodes: [{ name: 'MADHOUSE' }] },
+                description: 'After a ten-year quest alongside the Hero Himmel and his party, the elf mage Frieren defeats the Demon King and brings peace to the realm. Centuries later, she embarks on a new journey to understand human mortality and the meaning of the bonds she formed.',
+                externalLinks: [
+                    { site: 'Crunchyroll', url: 'https://www.crunchyroll.com' },
+                    { site: 'Netflix', url: 'https://www.netflix.com' },
+                    { site: 'YouTube', url: 'https://www.youtube.com/@MuseAsia' }
+                ],
+                relations: {
+                    edges: [
+                        { relationType: 'SOURCE', node: { id: 118586, type: 'MANGA', title: { english: "Frieren: Beyond Journey's End", romaji: 'Sousou no Frieren' }, format: 'MANGA', status: 'RELEASING', chapters: null, seasonYear: 2020, coverImage: { medium: 'https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx118586-F0Lp86Xgz72h.jpg' } } },
+                        { relationType: 'SEQUEL', node: { id: 182255, type: 'ANIME', title: { english: "Frieren: Beyond Journey's End Season 2", romaji: 'Sousou no Frieren 2nd Season' }, format: 'TV', status: 'NOT_YET_RELEASED', episodes: null, seasonYear: 2026, coverImage: { medium: 'https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx154587-gHSraOSa0nBG.jpg' } } }
+                    ]
+                },
+                characters: {
+                    edges: [
+                        { role: 'MAIN', node: { id: 176754, name: { full: 'Frieren', native: 'フリーレン' }, image: { medium: 'https://s4.anilist.co/file/anilistcdn/character/medium/b176754-Ya46Q72342.png' } }, voiceActors: [{ name: { full: 'Atsumi Tanezaki' } }] },
+                        { role: 'MAIN', node: { id: 183965, name: { full: 'Fern', native: 'フェルン' }, image: { medium: 'https://s4.anilist.co/file/anilistcdn/character/medium/b183965-82342.png' } }, voiceActors: [{ name: { full: 'Kana Ichinose' } }] }
+                    ]
+                }
+            },
+            {
+                id: 21,
+                type: 'ANIME',
+                title: { romaji: 'ONE PIECE', english: 'ONE PIECE', native: 'ONE PIECE' },
+                coverImage: { extraLarge: 'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21-YCDoj1EkAxFn.jpg' },
+                bannerImage: 'https://s4.anilist.co/file/anilistcdn/media/anime/banner/21-wf37VakJmZqs.jpg',
+                format: 'TV',
+                status: 'RELEASING',
+                episodes: null,
+                duration: 24,
+                season: 'FALL',
+                seasonYear: 1999,
+                averageScore: 88,
+                genres: ['Action', 'Adventure', 'Comedy', 'Drama', 'Fantasy'],
+                source: 'MANGA',
+                startDate: { year: 1999, month: 10, day: 20 },
+                endDate: { year: null, month: null, day: null },
+                nextAiringEpisode: { episode: 1125, timeUntilAiring: 345600 },
+                studios: { nodes: [{ name: 'Toei Animation' }] },
+                description: 'Gold Roger was known as the Pirate King, the strongest and most infamous being to have sailed the Grand Line. Before his death, he revealed his treasure, the One Piece, inspiring Monkey D. Luffy to set sail and become the next Pirate King.',
+                externalLinks: [
+                    { site: 'Crunchyroll', url: 'https://www.crunchyroll.com' },
+                    { site: 'Netflix', url: 'https://www.netflix.com' }
+                ],
+                relations: { edges: [] },
+                characters: {
+                    edges: [
+                        { role: 'MAIN', node: { id: 40, name: { full: 'Monkey D. Luffy', native: 'モンキー・D・ルフィ' }, image: { medium: 'https://s4.anilist.co/file/anilistcdn/character/medium/b40-chQw4671.png' } }, voiceActors: [{ name: { full: 'Mayumi Tanaka' } }] }
+                    ]
+                }
+            },
+            {
+                id: 16498,
+                type: 'ANIME',
+                title: { romaji: 'Shingeki no Kyojin', english: 'Attack on Titan', native: '進撃の巨人' },
+                coverImage: { extraLarge: 'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx16498-73IhOXpJZiMF.jpg' },
+                bannerImage: 'https://s4.anilist.co/file/anilistcdn/media/anime/banner/16498-8jpFCOcDmneX.jpg',
+                format: 'TV',
+                status: 'FINISHED',
+                episodes: 25,
+                duration: 24,
+                season: 'SPRING',
+                seasonYear: 2013,
+                averageScore: 85,
+                genres: ['Action', 'Drama', 'Fantasy', 'Mystery'],
+                source: 'MANGA',
+                startDate: { year: 2013, month: 4, day: 7 },
+                endDate: { year: 2013, month: 9, day: 29 },
+                studios: { nodes: [{ name: 'Wit Studio' }] },
+                description: 'Centuries ago, mankind was slaughtered to near extinction by monstrous humanoid creatures called Titans, forcing humans to hide in fear behind enormous concentric walls.',
+                externalLinks: [
+                    { site: 'Crunchyroll', url: 'https://www.crunchyroll.com' },
+                    { site: 'Netflix', url: 'https://www.netflix.com' }
+                ],
+                relations: { edges: [] },
+                characters: { edges: [] }
+            }
+        ];
+
+        // Application State
+        const state = {
+            activeTab: 'encyclopedia',
+            enc: { page: 1, search: '', sort: 'POPULARITY_DESC', genre: '', year: '', status: '', loading: false },
+            upcoming: { page: 1, mode: 'NEWLY_ANNOUNCED', loading: false, initialized: false },
+            manga: { page: 1, search: '', sort: 'POPULARITY_DESC', genre: '', format: '', status: '', loading: false, initialized: false },
+            char: { page: 1, search: '', letter: '', loading: false, initialized: false }
+        };
+
+        const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+        function formatFuzzyDate(d) {
+            if (!d || !d.year) return 'TBA';
+            const month = d.month ? MONTHS[d.month - 1] + ' ' : '';
+            const day = d.day ? d.day + ', ' : '';
+            return `${month}${day}${d.year}`;
+        }
+
+        function formatStatusBadge(status, type = 'ANIME') {
+            const isManga = type === 'MANGA';
+            switch (status) {
+                case 'RELEASING':
+                    return { text: isManga ? 'Publishing' : 'Airing Now', cls: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' };
+                case 'FINISHED':
+                    return { text: 'Completed', cls: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30' };
+                case 'NOT_YET_RELEASED':
+                    return { text: 'Upcoming', cls: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30' };
+                case 'CANCELLED':
+                    return { text: 'Cancelled', cls: 'bg-rose-500/20 text-rose-300 border-rose-500/30' };
+                case 'HIATUS':
+                    return { text: 'Hiatus', cls: 'bg-amber-500/20 text-amber-300 border-amber-500/30' };
+                default:
+                    return { text: status || 'Unknown', cls: 'bg-slate-500/20 text-slate-300 border-slate-500/30' };
+            }
+        }
+
+        function formatCountdown(seconds) {
+            if (!seconds || seconds <= 0) return 'Airing soon';
+            const days = Math.floor(seconds / 86400);
+            const hours = Math.floor((seconds % 86400) / 3600);
+            const mins = Math.floor((seconds % 3600) / 60);
+            if (days > 0) return `${days}d ${hours}h ${mins}m`;
+            return `${hours}h ${mins}m`;
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        function cleanDescription(text) {
+            if (!text) return 'No synopsis available in the database yet.';
+            return escapeHtml(text)
+                .replace(/~!(.*?)!~/gs, '<span class="spoiler-block bg-slate-800 text-slate-800 hover:text-slate-200 px-1.5 py-0.5 rounded cursor-pointer transition select-none" title="Click or hover to reveal spoiler">$1</span>')
+                .replace(/\n/g, '<br/>');
+        }
+
+        // Backend API Fetch Helper with Automatic Standalone Preview Fallback
+        function fetchBackend(endpoint, params = {}) {
+            const url = new URL(API_BASE + endpoint, window.location.origin);
+            Object.entries(params).forEach(([k, v]) => {
+                if (v !== '' && v !== null && v !== undefined) {
+                    url.searchParams.set(k, v);
+                }
+            });
+
+            return fetch(url.toString())
+                .then((res) => {
+                    const contentType = res.headers.get('content-type') || '';
+                    if (!res.ok || !contentType.includes('application/json')) {
+                        throw new Error('BACKEND_UNAVAILABLE');
+                    }
+                    return res.json();
+                })
+                .catch(() => {
+                    // Seamless standalone fallback when previewed without node server.js running
+                    return fetchStandaloneFallback(endpoint, params);
+                });
+        }
+
+        function fetchStandaloneFallback(endpoint, params = {}) {
+            const upstream = 'https://graphql.anilist.co';
+            let query = '';
+            let variables = {};
+
+            if (endpoint === '/anime') {
+                query = `
+          query ($page: Int, $search: String, $sort: [MediaSort], $genre: String, $seasonYear: Int, $status: MediaStatus) {
+            Page(page: $page, perPage: 20) {
+              pageInfo { hasNextPage }
+              media(type: ANIME, isAdult: false, search: $search, sort: $sort, genre: $genre, seasonYear: $seasonYear, status: $status) {
+                id type title { romaji english native } coverImage { extraLarge large }
+                format status episodes seasonYear averageScore genres
+                startDate { year month day } endDate { year month day }
+                studios(isMain: true) { nodes { name } }
+              }
+            }
+          }
+        `;
+                variables = {
+                    page: Number(params.page) || 1,
+                    sort: [params.sort || 'POPULARITY_DESC'],
+                    search: params.search || undefined,
+                    genre: params.genre || undefined,
+                    seasonYear: params.year ? Number(params.year) : undefined,
+                    status: params.status || undefined
+                };
+            } else if (endpoint === '/upcoming') {
+                const mode = params.mode || 'NEWLY_ANNOUNCED';
+                const type = mode === 'UPCOMING_MANGA' ? 'MANGA' : 'ANIME';
+                const status = mode === 'RELEASING' ? 'RELEASING' : 'NOT_YET_RELEASED';
+                const sort = (mode === 'NEWLY_ANNOUNCED' || mode === 'UPCOMING_MANGA') ? ['ID_DESC'] : (mode === 'RELEASING' ? ['TRENDING_DESC'] : ['POPULARITY_DESC']);
+                query = `
+          query ($page: Int, $type: MediaType, $status: MediaStatus, $sort: [MediaSort]) {
+            Page(page: $page, perPage: 15) {
+              pageInfo { hasNextPage }
+              media(type: $type, isAdult: false, status: $status, sort: $sort) {
+                id type title { romaji english } coverImage { large } bannerImage
+                format status episodes chapters season seasonYear genres
+                startDate { year month day }
+                nextAiringEpisode { episode timeUntilAiring }
+                studios(isMain: true) { nodes { name } }
+                relations { edges { relationType(version: 2) node { type title { english romaji } } } }
+                externalLinks { site url type }
+              }
+            }
+          }
+        `;
+                variables = { page: Number(params.page) || 1, type, status, sort };
+            } else if (endpoint === '/manga') {
+                query = `
+          query ($page: Int, $search: String, $sort: [MediaSort], $genre: String, $format: MediaFormat, $status: MediaStatus) {
+            Page(page: $page, perPage: 20) {
+              pageInfo { hasNextPage }
+              media(type: MANGA, isAdult: false, search: $search, sort: $sort, genre: $genre, format: $format, status: $status) {
+                id type title { romaji english native } coverImage { extraLarge large }
+                format status chapters volumes averageScore genres
+                startDate { year month day }
+              }
+            }
+          }
+        `;
+                variables = {
+                    page: Number(params.page) || 1,
+                    sort: [params.sort || 'POPULARITY_DESC'],
+                    search: params.search || undefined,
+                    genre: params.genre || undefined,
+                    format: params.format || undefined,
+                    status: params.status || undefined
+                };
+            } else if (endpoint === '/characters') {
+                query = `
+          query ($page: Int, $search: String) {
+            Page(page: $page, perPage: 24) {
+              pageInfo { hasNextPage }
+              characters(search: $search, sort: [FAVOURITES_DESC]) {
+                id name { full native } image { large } favourites
+                media(perPage: 1, sort: [POPULARITY_DESC]) { nodes { title { romaji english } } }
+              }
+            }
+          }
+        `;
+                variables = { page: Number(params.page) || 1, search: params.search || undefined };
+            } else if (endpoint === '/random') {
+                const randomPage = Math.floor(Math.random() * 120) + 1;
+                query = `query ($page: Int) { Page(page: $page, perPage: 20) { media(type: ANIME, isAdult: false, sort: [POPULARITY_DESC]) { id } } }`;
+                variables = { page: randomPage };
+            } else if (endpoint.startsWith('/media/')) {
+                const id = Number(endpoint.split('/').pop());
+                query = `
+          query ($id: Int) {
+            Media(id: $id) {
+              id type title { romaji english native } coverImage { extraLarge large } bannerImage
+              format status episodes chapters volumes duration season seasonYear averageScore popularity genres source
+              description(asHtml: false)
+              startDate { year month day } endDate { year month day }
+              nextAiringEpisode { episode timeUntilAiring }
+              studios(isMain: true) { nodes { name } }
+              staff(perPage: 4, sort: [RELEVANCE]) { edges { role node { name { full } } } }
+              externalLinks { site url type }
+              relations { edges { relationType(version: 2) node { id type title { romaji english } format status episodes chapters seasonYear coverImage { medium } } } }
+              characters(perPage: 25, sort: [ROLE, RELEVANCE]) { edges { role node { id name { full native } image { medium } } voiceActors(language: JAPANESE, sort: [RELEVANCE]) { name { full } } } }
+            }
+          }
+        `;
+                variables = { id };
+            } else if (endpoint.startsWith('/character/')) {
+                const id = Number(endpoint.split('/').pop());
+                query = `
+          query ($id: Int) {
+            Character(id: $id) {
+              id name { full native alternative } image { large } description(asHtml: false)
+              gender age bloodType dateOfBirth { year month day } favourites
+              media(perPage: 8, sort: [POPULARITY_DESC]) {
+                edges {
+                  characterRole
+                  voiceActors(sort: [LANGUAGE, RELEVANCE]) { languageV2 name { full } }
+                  node { id type title { romaji english } seasonYear coverImage { medium } }
+                }
+              }
+            }
+          }
+        `;
+                variables = { id };
+            }
+
+            return fetch(upstream, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({ query, variables })
+            })
+                .then((res) => res.json())
+                .then((json) => {
+                    if (!json || !json.data) throw new Error('API Error');
+                    if (endpoint === '/random') {
+                        const list = json.data.Page?.media || [];
+                        const pick = list[Math.floor(Math.random() * list.length)];
+                        return { id: pick?.id || 154587 };
+                    }
+                    if (endpoint.startsWith('/media/')) return json.data.Media;
+                    if (endpoint.startsWith('/character/')) return json.data.Character;
+                    return json.data.Page;
+                });
+        }
+
+        // =========================================================================
+        // TAB NAVIGATION
+        // =========================================================================
+        function switchTab(tab) {
+            state.activeTab = tab;
+            ['encyclopedia', 'upcoming', 'manga', 'characters'].forEach(t => {
+                const sec = document.getElementById(`section-${t}`);
+                const btn = document.getElementById(`nav-${t}`);
+                if (t === tab) {
+                    sec.classList.remove('hidden');
+                    btn.classList.remove('text-slate-400', 'hover:text-white', 'hover:bg-surfaceHover');
+                    btn.classList.add('bg-indigo-600', 'text-white', 'shadow-md', 'shadow-indigo-600/20');
+                } else {
+                    sec.classList.add('hidden');
+                    btn.classList.add('text-slate-400', 'hover:text-white', 'hover:bg-surfaceHover');
+                    btn.classList.remove('bg-indigo-600', 'text-white', 'shadow-md', 'shadow-indigo-600/20');
+                }
+            });
+
+            if (tab === 'upcoming' && !state.upcoming.initialized) {
+                state.upcoming.initialized = true;
+                loadUpcoming(true);
+            }
+            if (tab === 'manga' && !state.manga.initialized) {
+                state.manga.initialized = true;
+                loadManga(true);
+            }
+            if (tab === 'characters' && !state.char.initialized) {
+                state.char.initialized = true;
+                loadCharacters(true);
+            }
+        }
+
+        // =========================================================================
+        // SECTION 1: ALL ANIME ENCYCLOPEDIA
+        // =========================================================================
+        function populateYearFilter() {
+            const select = document.getElementById('enc-year');
+            const currentYear = new Date().getFullYear() + 2;
+            for (let y = currentYear; y >= 1965; y--) {
+                const opt = document.createElement('option');
+                opt.value = y;
+                opt.textContent = y;
+                select.appendChild(opt);
+            }
+        }
+
+        function setEncStatus(status) {
+            state.enc.status = status;
+            document.querySelectorAll('.enc-status-pill').forEach(btn => {
+                if (btn.dataset.status === status) {
+                    btn.classList.remove('bg-obsidian', 'text-slate-300', 'border', 'border-borderDark');
+                    btn.classList.add('bg-indigo-600', 'text-white');
+                } else {
+                    btn.classList.add('bg-obsidian', 'text-slate-300', 'border', 'border-borderDark');
+                    btn.classList.remove('bg-indigo-600', 'text-white');
+                }
+            });
+            loadEncyclopedia(true);
+        }
+
+        function renderSkeletons(containerId, count = 10) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = Array.from({ length: count }).map(() => `
+        <div class="bg-surface border border-borderDark rounded-2xl overflow-hidden animate-pulse">
+          <div class="aspect-[2/3] bg-slate-800/80"></div>
+          <div class="p-3.5 space-y-2">
+            <div class="h-4 bg-slate-800 rounded w-3/4"></div>
+            <div class="h-3 bg-slate-800 rounded w-1/2"></div>
+          </div>
+        </div>
+      `).join('');
+        }
+
+        function createMediaCardHTML(item) {
+            const isManga = item.type === 'MANGA';
+            const title = item.title?.english || item.title?.romaji || 'Unknown Title';
+            const cover = item.coverImage?.extraLarge || item.coverImage?.large || 'https://placehold.co/300x450/131822/94a3b8?text=No+Cover';
+            const statusBadge = formatStatusBadge(item.status, item.type);
+            const studio = item.studios?.nodes?.[0]?.name || (isManga ? (item.format || 'MANGA') : 'Studio TBA');
+            const countText = isManga
+                ? (item.chapters ? `${item.chapters} Ch` : (item.volumes ? `${item.volumes} Vol` : 'Ongoing'))
+                : (item.episodes ? `${item.episodes} Eps` : (item.status === 'RELEASING' ? 'Ongoing' : 'TBA'));
+            const score = item.averageScore ? `${item.averageScore}%` : 'N/A';
+            const startYear = item.startDate?.year || item.seasonYear || 'TBA';
+            const genres = (item.genres || []).slice(0, 2).join(' • ');
+            const hoverBorder = isManga ? 'hover:border-purple-500/60 hover:shadow-purple-500/10' : 'hover:border-indigo-500/60 hover:shadow-indigo-500/10';
+            const titleHover = isManga ? 'group-hover:text-purple-300' : 'group-hover:text-indigo-300';
+
+            return `
+        <article onclick="openAnimeModal(${item.id}, false, '${item.type || 'ANIME'}')" class="group bg-surface border border-borderDark ${hoverBorder} rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col">
+          <div class="relative aspect-[2/3] overflow-hidden bg-obsidian">
+            <img src="${cover}" alt="${escapeHtml(title)}" loading="lazy" onerror="this.src='https://placehold.co/300x450/131822/94a3b8?text=Cover'" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-black/30 opacity-90"></div>
+            
+            <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-md text-[10px] font-bold uppercase border backdrop-blur-md ${statusBadge.cls}">
+              ${statusBadge.text}
+            </span>
+
+            ${item.averageScore ? `
+              <span class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-md text-[11px] font-mono font-bold bg-obsidian/85 text-amber-400 border border-amber-500/30 backdrop-blur-md">
+                ★ ${score}
+              </span>
+            ` : ''}
+
+            <div class="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between text-[11px] font-mono text-slate-200">
+              <span class="px-2 py-0.5 rounded bg-obsidian/80 backdrop-blur-sm">${item.format || (isManga ? 'MANGA' : 'TV')} • ${countText}</span>
+              <span class="px-2 py-0.5 rounded bg-obsidian/80 backdrop-blur-sm">${startYear}</span>
+            </div>
+          </div>
+
+          <div class="p-3.5 flex-1 flex flex-col justify-between space-y-2">
+            <div>
+              <h3 class="font-bold text-sm text-white ${titleHover} transition line-clamp-2 leading-snug">${escapeHtml(title)}</h3>
+              <p class="text-xs text-slate-400 mt-1 truncate">${escapeHtml(studio)}</p>
+            </div>
+            <div class="pt-2 border-t border-borderDark/60 flex items-center justify-between text-[11px] text-slate-400">
+              <span class="truncate">${escapeHtml(genres || (isManga ? 'Manga' : 'Anime'))}</span>
+              <span class="${isManga ? 'text-purple-400' : 'text-cyan-400'} font-semibold shrink-0 ml-1">Wiki →</span>
+            </div>
+          </div>
+        </article>
+      `;
+        }
+
+        function loadEncyclopedia(reset = false) {
+            if (state.enc.loading) return;
+            state.enc.loading = true;
+
+            if (reset) {
+                state.enc.page = 1;
+                renderSkeletons('enc-grid', 10);
+            }
+
+            const loadMoreBtn = document.getElementById('enc-load-more');
+            const errorBox = document.getElementById('enc-error');
+            loadMoreBtn.disabled = true;
+            loadMoreBtn.classList.add('opacity-50');
+
+            fetchBackend('/anime', {
+                page: state.enc.page,
+                sort: state.enc.sort,
+                search: state.enc.search,
+                genre: state.enc.genre,
+                year: state.enc.year,
+                status: state.enc.status
+            })
+                .then((pageData) => {
+                    errorBox.classList.add('hidden');
+                    const list = pageData.media || [];
+                    const grid = document.getElementById('enc-grid');
+
+                    if (reset) {
+                        grid.innerHTML = list.length ? list.map(createMediaCardHTML).join('') : `
+              <div class="col-span-full text-center py-12 text-slate-400">
+                No anime found matching your current filters. Try clearing the search or year filter.
+              </div>
+            `;
+                    } else {
+                        grid.insertAdjacentHTML('beforeend', list.map(createMediaCardHTML).join(''));
+                    }
+
+                    state.enc.page++;
+                    loadMoreBtn.style.display = pageData.pageInfo?.hasNextPage ? 'flex' : 'none';
+                })
+                .catch(() => {
+                    errorBox.classList.remove('hidden');
+                    if (reset) {
+                        document.getElementById('enc-grid').innerHTML = FALLBACK_ANIME.map(createMediaCardHTML).join('');
+                    }
+                })
+                .finally(() => {
+                    state.enc.loading = false;
+                    loadMoreBtn.disabled = false;
+                    loadMoreBtn.classList.remove('opacity-50');
+                });
+        }
+
+        // =========================================================================
+        // RANDOM ANIME DICE TRIGGER
+        // =========================================================================
+        function openRandomAnime() {
+            const dice = document.getElementById('nav-dice-icon');
+            if (dice) dice.classList.add('rotate-180');
+
+            const modal = document.getElementById('anime-modal');
+            const container = document.getElementById('anime-modal-content');
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+
+            container.innerHTML = `
+        <div class="p-12 text-center space-y-4">
+          <div class="w-10 h-10 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <p class="text-sm text-cyan-300 font-semibold">Rolling the Dice for a Random Anime...</p>
+        </div>
+      `;
+
+            fetchBackend('/random')
+                .then((res) => openAnimeModal(res.id, true, 'ANIME'))
+                .catch(() => {
+                    const pick = FALLBACK_ANIME[Math.floor(Math.random() * FALLBACK_ANIME.length)];
+                    renderAnimeDetailModal(pick, true);
+                })
+                .finally(() => {
+                    if (dice) setTimeout(() => dice.classList.remove('rotate-180'), 500);
+                });
+        }
+
+        // =========================================================================
+        // DETAILED WIKIPEDIA-STYLE MEDIA MODAL (ANIME & MANGA SUPPORT)
+        // =========================================================================
+        function openAnimeModal(mediaId, isRandomRoll = false, mediaType = 'ANIME') {
+            const modal = document.getElementById('anime-modal');
+            const container = document.getElementById('anime-modal-content');
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+
+            if (!isRandomRoll) {
+                container.innerHTML = `
+          <div class="p-12 text-center space-y-4">
+            <div class="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+            <p class="text-sm text-slate-300 font-medium">Loading Complete Encyclopedia Entry, Franchise Relations & Cast...</p>
+          </div>
+        `;
+            }
+
+            return fetchBackend(`/media/${mediaId}`)
+                .then((media) => {
+                    renderAnimeDetailModal(media, isRandomRoll);
+                })
+                .catch(() => {
+                    const fallback = FALLBACK_ANIME.find(a => a.id === mediaId) || FALLBACK_ANIME[0];
+                    renderAnimeDetailModal(fallback, isRandomRoll);
+                });
+        }
+
+        function renderAnimeDetailModal(anime, isRandomRoll = false) {
+            const container = document.getElementById('anime-modal-content');
+            const isManga = anime.type === 'MANGA';
+            const titleEn = anime.title?.english || anime.title?.romaji || 'Unknown Title';
+            const titleRomaji = anime.title?.romaji || '';
+            const titleNative = anime.title?.native || '';
+            const cover = anime.coverImage?.extraLarge || anime.coverImage?.large || '';
+            const banner = anime.bannerImage || cover;
+            const statusBadge = formatStatusBadge(anime.status, anime.type);
+            const studio = anime.studios?.nodes?.map(s => s.name).join(', ') || (anime.staff?.edges?.map(e => `${e.node.name.full} (${e.role})`).slice(0, 2).join(', ') || 'TBA');
+
+            const officialStreams = (anime.externalLinks || []).filter(link => OFFICIAL_PLATFORMS[link.site]);
+
+            const relations = (anime.relations?.edges || []).filter(edge => edge.node && (edge.node.type === 'ANIME' || edge.node.type === 'MANGA'));
+            const relationOrder = { PREQUEL: 1, SEQUEL: 2, SOURCE: 3, ADAPTATION: 4, PARENT: 5, SIDE_STORY: 6, SPIN_OFF: 7 };
+            relations.sort((a, b) => (relationOrder[a.relationType] || 99) - (relationOrder[b.relationType] || 99));
+
+            const characters = anime.characters?.edges || [];
+
+            container.innerHTML = `
+        <div class="relative h-48 sm:h-64 bg-obsidian overflow-hidden">
+          <img src="${banner}" alt="" class="w-full h-full object-cover opacity-40 blur-[2px] scale-105" />
+          <div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/70 to-transparent"></div>
+          ${isRandomRoll ? `
+            <button onclick="openRandomAnime()" class="absolute top-4 left-4 z-30 flex items-center gap-2 px-3.5 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold shadow-lg transition">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="4" ry="4"></rect>
+                <circle cx="8.5" cy="8.5" r="1.2" fill="currentColor"></circle>
+                <circle cx="15.5" cy="15.5" r="1.2" fill="currentColor"></circle>
+              </svg>
+              Roll Another Random Anime
+            </button>
+          ` : ''}
+        </div>
+
+        <div class="px-5 sm:px-8 pb-8 -mt-24 sm:-mt-32 relative z-10 space-y-8">
+          <div class="flex flex-col sm:flex-row gap-6 items-start">
+            <img src="${cover}" alt="${escapeHtml(titleEn)}" class="w-36 sm:w-48 rounded-xl border-2 border-borderDark shadow-2xl shrink-0 bg-obsidian" />
+            <div class="space-y-3 pt-2 sm:pt-12 flex-1">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="px-2.5 py-1 rounded-lg text-xs font-bold uppercase border ${statusBadge.cls}">${statusBadge.text}</span>
+                <span class="px-2.5 py-1 rounded-lg text-xs font-mono bg-obsidian border border-borderDark text-slate-300">${anime.format || (isManga ? 'MANGA' : 'TV')}</span>
+                ${anime.averageScore ? `<span class="px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30">★ ${anime.averageScore}% Score</span>` : ''}
+                ${anime.nextAiringEpisode ? `
+                  <span class="px-2.5 py-1 rounded-lg text-xs font-mono font-semibold bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+                    Ep ${anime.nextAiringEpisode.episode} airs in ${formatCountdown(anime.nextAiringEpisode.timeUntilAiring)}
+                  </span>
+                ` : ''}
+              </div>
+
+              <div>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-white leading-tight">${escapeHtml(titleEn)}</h2>
+                ${titleRomaji && titleRomaji !== titleEn ? `<p class="text-sm text-slate-400 font-medium mt-0.5">${escapeHtml(titleRomaji)}</p>` : ''}
+                ${titleNative ? `<p class="text-xs text-slate-500 font-mono mt-0.5">${escapeHtml(titleNative)}</p>` : ''}
+              </div>
+
+              <div class="flex flex-wrap gap-1.5 pt-1">
+                ${(anime.genres || []).map(g => `<span class="px-2.5 py-0.5 rounded-full text-xs bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">${escapeHtml(g)}</span>`).join('')}
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-obsidian/80 border border-borderDark rounded-2xl p-4">
+            <div>
+              <span class="text-[11px] uppercase tracking-wider text-slate-400 block">${isManga ? 'Serialization Start' : 'First Aired (Start)'}</span>
+              <span class="text-sm font-bold text-white mt-0.5 block">${formatFuzzyDate(anime.startDate)}</span>
+            </div>
+            <div>
+              <span class="text-[11px] uppercase tracking-wider text-slate-400 block">${isManga ? 'Serialization End' : 'Ended / Finale'}</span>
+              <span class="text-sm font-bold text-white mt-0.5 block">${anime.status === 'RELEASING' ? (isManga ? 'Ongoing Publishing' : 'Ongoing Series') : formatFuzzyDate(anime.endDate)}</span>
+            </div>
+            <div>
+              <span class="text-[11px] uppercase tracking-wider text-slate-400 block">${isManga ? 'Chapters / Volumes' : 'Total Episodes'}</span>
+              <span class="text-sm font-bold text-cyan-400 mt-0.5 block">
+                ${isManga
+                    ? `${anime.chapters ? anime.chapters + ' Ch' : 'Ongoing'} ${anime.volumes ? '• ' + anime.volumes + ' Vol' : ''}`
+                    : (anime.episodes ? `${anime.episodes} Episodes` : 'TBA / Ongoing')}
+              </span>
+            </div>
+            <div>
+              <span class="text-[11px] uppercase tracking-wider text-slate-400 block">${isManga ? 'Author / Staff' : 'Animation Studio'}</span>
+              <span class="text-sm font-bold text-white mt-0.5 block truncate">${escapeHtml(studio)}</span>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span class="w-1.5 h-5 rounded-full bg-indigo-500"></span>
+              Synopsis & Overview
+            </h3>
+            <p class="text-sm text-slate-300 leading-relaxed bg-obsidian/50 border border-borderDark/70 rounded-xl p-4">
+              ${cleanDescription(anime.description)}
+            </p>
+          </div>
+
+          <div class="space-y-3">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+              <h3 class="text-base font-bold text-white flex items-center gap-2">
+                <span class="w-1.5 h-5 rounded-full bg-emerald-500"></span>
+                ${isManga ? 'Where to Read Officially (Licensed Platforms)' : 'Where to Watch Officially (Licensed Platforms)'}
+              </h3>
+              <span class="text-xs text-slate-400">Verified legal platforms only</span>
+            </div>
+
+            ${officialStreams.length > 0 ? `
+              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                ${officialStreams.map(stream => {
+                        const meta = OFFICIAL_PLATFORMS[stream.site];
+                        return `
+                    <a href="${escapeHtml(stream.url)}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-3.5 rounded-xl border ${meta.color} hover:brightness-125 transition">
+                      <div>
+                        <span class="font-bold text-sm block">${escapeHtml(stream.site)}</span>
+                        <span class="text-[11px] opacity-80">${meta.badge}</span>
+                      </div>
+                      <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </a>
+                  `;
+                    }).join('')}
+              </div>
+            ` : `
+              <div class="bg-obsidian/70 border border-borderDark rounded-xl p-4 text-xs text-slate-400 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <span>${isManga ? 'Official digital reader links vary by region. Check major licensed publishers:' : 'Regional streaming licenses vary by country or may be announced closer to premiere. Check major licensed platforms:'}</span>
+                <div class="flex flex-wrap gap-2 shrink-0">
+                  ${isManga ? `
+                    <a href="https://mangaplus.shueisha.co.jp" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg bg-rose-500/15 text-rose-300 border border-rose-500/30 font-semibold hover:bg-rose-500/25 transition">MANGA Plus</a>
+                    <a href="https://www.viz.com" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg bg-red-500/15 text-red-300 border border-red-500/30 font-semibold hover:bg-red-500/25 transition">VIZ Media</a>
+                  ` : `
+                    <a href="https://www.crunchyroll.com" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg bg-orange-500/15 text-orange-300 border border-orange-500/30 font-semibold hover:bg-orange-500/25 transition">Crunchyroll</a>
+                    <a href="https://www.netflix.com" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg bg-red-500/15 text-red-300 border border-red-500/30 font-semibold hover:bg-red-500/25 transition">Netflix</a>
+                    <a href="https://www.youtube.com/@MuseAsia" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg bg-rose-500/15 text-rose-300 border border-rose-500/30 font-semibold hover:bg-rose-500/25 transition">Muse Asia</a>
+                  `}
+                </div>
+              </div>
+            `}
+          </div>
+
+          ${relations.length > 0 ? `
+            <div class="space-y-3">
+              <h3 class="text-base font-bold text-white flex items-center gap-2">
+                <span class="w-1.5 h-5 rounded-full bg-cyan-500"></span>
+                Franchise Timeline: Seasons, Manga Source & Adaptations
+              </h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                ${relations.map(rel => {
+                        const node = rel.node;
+                        const relTitle = node.title?.english || node.title?.romaji || 'Related Title';
+                        const relStatus = formatStatusBadge(node.status, node.type);
+                        return `
+                    <div onclick="openAnimeModal(${node.id}, false, '${node.type}')" class="flex items-center gap-3 p-3 rounded-xl bg-obsidian border border-borderDark hover:border-cyan-500/50 cursor-pointer transition">
+                      <img src="${node.coverImage?.medium || ''}" alt="" class="w-12 h-16 rounded-lg object-cover shrink-0 bg-surface" />
+                      <div class="min-w-0 flex-1">
+                        <span class="text-[10px] font-mono font-bold uppercase text-cyan-400 block">${escapeHtml(rel.relationType.replace(/_/g, ' '))} • ${node.type}</span>
+                        <h4 class="text-xs font-bold text-white truncate mt-0.5">${escapeHtml(relTitle)}</h4>
+                        <div class="flex items-center gap-2 mt-1.5">
+                          <span class="px-1.5 py-0.5 rounded text-[10px] border ${relStatus.cls}">${relStatus.text}</span>
+                          <span class="text-[11px] text-slate-400">${node.seasonYear || 'TBA'}</span>
+                        </div>
+                      </div>
+                    </div>
+                  `;
+                    }).join('')}
+              </div>
+            </div>
+          ` : ''}
+
+          ${characters.length > 0 ? `
+            <div class="space-y-3">
+              <h3 class="text-base font-bold text-white flex items-center gap-2">
+                <span class="w-1.5 h-5 rounded-full bg-purple-500"></span>
+                Featured Characters & Cast (Click for Full Bio)
+              </h3>
+              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                ${characters.map(edge => {
+                        const char = edge.node;
+                        const va = edge.voiceActors?.[0]?.name?.full || 'VA TBA';
+                        return `
+                    <div onclick="openCharModal(${char.id})" class="flex items-center gap-2.5 p-2.5 rounded-xl bg-obsidian border border-borderDark hover:border-purple-500/50 cursor-pointer transition">
+                      <img src="${char.image?.medium || ''}" alt="${escapeHtml(char.name.full)}" class="w-11 h-11 rounded-full object-cover shrink-0 border border-borderDark" />
+                      <div class="min-w-0">
+                        <h4 class="text-xs font-bold text-white truncate">${escapeHtml(char.name.full)}</h4>
+                        <span class="text-[10px] text-purple-300 block">${escapeHtml(edge.role)}</span>
+                        <span class="text-[10px] text-slate-400 truncate block">CV: ${escapeHtml(va)}</span>
+                      </div>
+                    </div>
+                  `;
+                    }).join('')}
+              </div>
+            </div>
+          ` : ''}
+        </div>
+      `;
+        }
+
+        function closeAnimeModal() {
+            document.getElementById('anime-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // =========================================================================
+        // SECTION 2: UPCOMING ANIME, MANGA & AUTO-DETECTION RADAR
+        // =========================================================================
+        function switchUpcomingMode(mode) {
+            state.upcoming.mode = mode;
+            const buttons = {
+                NEWLY_ANNOUNCED: document.getElementById('up-btn-newly'),
+                NOT_YET_RELEASED: document.getElementById('up-btn-upcoming'),
+                UPCOMING_MANGA: document.getElementById('up-btn-manga-up'),
+                RELEASING: document.getElementById('up-btn-airing')
+            };
+
+            Object.entries(buttons).forEach(([key, btn]) => {
+                if (!btn) return;
+                if (key === mode) {
+                    btn.classList.add('bg-cyan-600', 'text-white');
+                    btn.classList.remove('text-slate-400', 'hover:text-white');
+                } else {
+                    btn.classList.remove('bg-cyan-600', 'text-white');
+                    btn.classList.add('text-slate-400', 'hover:text-white');
+                }
+            });
+
+            loadUpcoming(true);
+        }
+
+        function createUpcomingCardHTML(item) {
+            const isManga = item.type === 'MANGA';
+            const title = item.title?.english || item.title?.romaji || 'Upcoming Title';
+            const cover = item.coverImage?.large || '';
+            const studio = item.studios?.nodes?.[0]?.name || (isManga ? 'Manga Serialization' : 'Studio TBA');
+            const startDate = formatFuzzyDate(item.startDate);
+            const isDateConfirmed = Boolean(item.startDate && item.startDate.year);
+            const seasonLabel = item.season && item.seasonYear ? `${item.season} ${item.seasonYear}` : startDate;
+            const officialStreams = (item.externalLinks || []).filter(l => OFFICIAL_PLATFORMS[l.site]);
+            const sourceRel = (item.relations?.edges || []).find(e => e.relationType === 'SOURCE' || e.relationType === 'ADAPTATION');
+
+            return `
+        <article onclick="openAnimeModal(${item.id}, false, '${item.type || 'ANIME'}')" class="group bg-surface border border-borderDark hover:border-cyan-500/60 rounded-2xl overflow-hidden shadow-lg transition cursor-pointer flex flex-col justify-between">
+          <div class="p-4 flex gap-4">
+            <img src="${cover}" alt="${escapeHtml(title)}" loading="lazy" class="w-24 h-36 rounded-xl object-cover shrink-0 bg-obsidian border border-borderDark group-hover:scale-105 transition-transform duration-300" />
+            <div class="min-w-0 flex-1 space-y-2">
+              <div class="flex flex-wrap items-center gap-1.5">
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase ${isManga ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30' : 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'}">
+                  ${isManga ? 'Manga' : 'Anime'}
+                </span>
+                ${isDateConfirmed ? `
+                  <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                    Date Confirmed
+                  </span>
+                ` : `
+                  <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30">
+                    Announced • Date TBA
+                  </span>
+                `}
+              </div>
+
+              <h3 class="font-bold text-base text-white group-hover:text-cyan-300 transition line-clamp-2 leading-snug">${escapeHtml(title)}</h3>
+              <p class="text-xs text-slate-400 truncate">${escapeHtml(studio)} • ${item.format || (isManga ? 'MANGA' : 'TV')}</p>
+
+              ${item.nextAiringEpisode ? `
+                <div class="p-2 rounded-lg bg-obsidian border border-cyan-500/30 text-xs">
+                  <span class="text-cyan-400 font-bold">Ep ${item.nextAiringEpisode.episode}</span>
+                  <span class="text-slate-300"> airs in </span>
+                  <span class="font-mono font-bold text-white">${formatCountdown(item.nextAiringEpisode.timeUntilAiring)}</span>
+                </div>
+              ` : `
+                <div class="p-2 rounded-lg bg-obsidian border border-borderDark text-xs flex items-center justify-between">
+                  <span class="text-slate-400">Release Window:</span>
+                  <span class="font-bold text-white">${escapeHtml(seasonLabel)}</span>
+                </div>
+              `}
+            </div>
+          </div>
+
+          <div class="px-4 py-3 bg-obsidian/70 border-t border-borderDark/70 flex items-center justify-between gap-2 text-xs">
+            <span class="text-slate-400 shrink-0">${sourceRel ? 'Linked Franchise' : (isManga ? 'Official Reader:' : 'Where it airs:')}</span>
+            <div class="flex flex-wrap justify-end gap-1.5 truncate">
+              ${officialStreams.length > 0 ? officialStreams.slice(0, 2).map(s => `
+                <span class="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[11px] font-semibold">${escapeHtml(s.site)}</span>
+              `).join('') : `
+                <span class="text-slate-400 italic text-[11px]">${isDateConfirmed ? 'TBA on Official Platforms' : 'Awaiting Broadcast Details'}</span>
+              `}
+            </div>
+          </div>
+        </article>
+      `;
+        }
+
+        function loadUpcoming(reset = false) {
+            if (state.upcoming.loading) return;
+            state.upcoming.loading = true;
+
+            if (reset) {
+                state.upcoming.page = 1;
+                renderSkeletons('upcoming-grid', 6);
+            }
+
+            fetchBackend('/upcoming', {
+                page: state.upcoming.page,
+                mode: state.upcoming.mode
+            })
+                .then((pageData) => {
+                    const list = pageData.media || [];
+                    const grid = document.getElementById('upcoming-grid');
+
+                    if (reset) {
+                        grid.innerHTML = list.map(createUpcomingCardHTML).join('');
+                    } else {
+                        grid.insertAdjacentHTML('beforeend', list.map(createUpcomingCardHTML).join(''));
+                    }
+
+                    state.upcoming.page++;
+                    document.getElementById('up-load-more').style.display = pageData.pageInfo?.hasNextPage ? 'inline-flex' : 'none';
+                })
+                .catch(() => {
+                    if (reset) {
+                        document.getElementById('upcoming-grid').innerHTML = `<div class="col-span-full text-center py-8 text-slate-400">Unable to load live schedule right now. Please retry shortly.</div>`;
+                    }
+                })
+                .finally(() => {
+                    state.upcoming.loading = false;
+                });
+        }
+
+        // =========================================================================
+        // SECTION 3: MANGA & NOVEL ENCYCLOPEDIA
+        // =========================================================================
+        function setMangaStatus(status) {
+            state.manga.status = status;
+            document.querySelectorAll('.manga-status-pill').forEach(btn => {
+                if (btn.dataset.status === status) {
+                    btn.classList.remove('bg-obsidian', 'text-slate-300', 'border', 'border-borderDark');
+                    btn.classList.add('bg-purple-600', 'text-white');
+                } else {
+                    btn.classList.add('bg-obsidian', 'text-slate-300', 'border', 'border-borderDark');
+                    btn.classList.remove('bg-purple-600', 'text-white');
+                }
+            });
+            loadManga(true);
+        }
+
+        function loadManga(reset = false) {
+            if (state.manga.loading) return;
+            state.manga.loading = true;
+
+            if (reset) {
+                state.manga.page = 1;
+                renderSkeletons('manga-grid', 10);
+            }
+
+            const loadMoreBtn = document.getElementById('manga-load-more');
+            loadMoreBtn.disabled = true;
+            loadMoreBtn.classList.add('opacity-50');
+
+            fetchBackend('/manga', {
+                page: state.manga.page,
+                sort: state.manga.sort,
+                search: state.manga.search,
+                genre: state.manga.genre,
+                format: state.manga.format,
+                status: state.manga.status
+            })
+                .then((pageData) => {
+                    const list = pageData.media || [];
+                    const grid = document.getElementById('manga-grid');
+
+                    if (reset) {
+                        grid.innerHTML = list.length ? list.map(createMediaCardHTML).join('') : `
+              <div class="col-span-full text-center py-12 text-slate-400">
+                No manga found matching your current filters.
+              </div>
+            `;
+                    } else {
+                        grid.insertAdjacentHTML('beforeend', list.map(createMediaCardHTML).join(''));
+                    }
+
+                    state.manga.page++;
+                    loadMoreBtn.style.display = pageData.pageInfo?.hasNextPage ? 'flex' : 'none';
+                })
+                .catch(() => {
+                    if (reset) {
+                        document.getElementById('manga-grid').innerHTML = `<div class="col-span-full text-center py-8 text-slate-400">Unable to fetch manga catalog right now.</div>`;
+                    }
+                })
+                .finally(() => {
+                    state.manga.loading = false;
+                    loadMoreBtn.disabled = false;
+                    loadMoreBtn.classList.remove('opacity-50');
+                });
+        }
+
+        // =========================================================================
+        // SECTION 4: CHARACTERS A–Z DIRECTORY
+        // =========================================================================
+        function buildAlphabetBar() {
+            const bar = document.getElementById('alphabet-bar');
+            const letters = ['ALL', ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')];
+            bar.innerHTML = letters.map(letter => `
+        <button 
+          onclick="selectAlphabetLetter('${letter === 'ALL' ? '' : letter}')" 
+          data-letter="${letter === 'ALL' ? '' : letter}"
+          class="alpha-btn px-2.5 py-1.5 rounded-lg text-xs font-mono font-bold transition ${letter === 'ALL' ? 'bg-cyan-600 text-white' : 'bg-obsidian text-slate-300 hover:bg-surfaceHover border border-borderDark'}"
+        >
+          ${letter}
+        </button>
+      `).join('');
+        }
+
+        function selectAlphabetLetter(letter) {
+            state.char.letter = letter;
+            state.char.search = '';
+            document.getElementById('char-search').value = '';
+            document.getElementById('char-active-filter-label').textContent = letter
+                ? `Showing Characters Starting With: "${letter}"`
+                : 'Showing: All Popular Characters';
+
+            document.querySelectorAll('.alpha-btn').forEach(btn => {
+                if (btn.dataset.letter === letter) {
+                    btn.classList.remove('bg-obsidian', 'text-slate-300', 'border', 'border-borderDark');
+                    btn.classList.add('bg-cyan-600', 'text-white');
+                } else {
+                    btn.classList.add('bg-obsidian', 'text-slate-300', 'border', 'border-borderDark');
+                    btn.classList.remove('bg-cyan-600', 'text-white');
+                }
+            });
+
+            loadCharacters(true);
+        }
+
+        function createCharacterCardHTML(char) {
+            const topAnime = char.media?.nodes?.[0]?.title?.english || char.media?.nodes?.[0]?.title?.romaji || 'Anime Character';
+            return `
+        <article onclick="openCharModal(${char.id})" class="group bg-surface border border-borderDark hover:border-cyan-500/60 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition cursor-pointer flex flex-col">
+          <div class="relative aspect-[3/4] overflow-hidden bg-obsidian">
+            <img src="${char.image?.large || ''}" alt="${escapeHtml(char.name.full)}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-transparent opacity-90"></div>
+            <span class="absolute bottom-2 left-2.5 right-2.5 text-[10px] font-mono text-cyan-300 truncate">
+              ♥ ${(char.favourites || 0).toLocaleString()} Favorites
+            </span>
+          </div>
+          <div class="p-3 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="font-bold text-sm text-white group-hover:text-cyan-300 transition truncate">${escapeHtml(char.name.full)}</h3>
+              <p class="text-[11px] text-slate-400 truncate mt-0.5">${escapeHtml(topAnime)}</p>
+            </div>
+            <span class="text-[11px] text-indigo-400 font-semibold mt-2 block">Read Bio →</span>
+          </div>
+        </article>
+      `;
+        }
+
+        function loadCharacters(reset = false) {
+            if (state.char.loading) return;
+            state.char.loading = true;
+
+            if (reset) {
+                state.char.page = 1;
+                renderSkeletons('char-grid', 12);
+            }
+
+            const activeQuery = state.char.search || state.char.letter || '';
+
+            fetchBackend('/characters', {
+                page: state.char.page,
+                search: activeQuery
+            })
+                .then((pageData) => {
+                    let list = pageData.characters || [];
+
+                    if (state.char.letter && !state.char.search) {
+                        const target = state.char.letter.toUpperCase();
+                        const startsWithMatches = list.filter(c => (c.name?.full || '').toUpperCase().startsWith(target));
+                        if (startsWithMatches.length > 0) list = startsWithMatches;
+                    }
+
+                    const grid = document.getElementById('char-grid');
+                    if (reset) {
+                        grid.innerHTML = list.length ? list.map(createCharacterCardHTML).join('') : `
+              <div class="col-span-full text-center py-12 text-slate-400">No characters matched that query.</div>
+            `;
+                    } else {
+                        grid.insertAdjacentHTML('beforeend', list.map(createCharacterCardHTML).join(''));
+                    }
+
+                    state.char.page++;
+                    document.getElementById('char-load-more').style.display = pageData.pageInfo?.hasNextPage ? 'inline-flex' : 'none';
+                })
+                .catch(() => {
+                    if (reset) {
+                        document.getElementById('char-grid').innerHTML = `<div class="col-span-full text-center py-8 text-slate-400">Unable to fetch character list right now.</div>`;
+                    }
+                })
+                .finally(() => {
+                    state.char.loading = false;
+                });
+        }
+
+        function openCharModal(charId) {
+            const modal = document.getElementById('char-modal');
+            const container = document.getElementById('char-modal-content');
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+
+            container.innerHTML = `
+        <div class="p-10 text-center space-y-3">
+          <div class="w-9 h-9 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <p class="text-sm text-slate-300">Loading Character Profile & Voice Actors...</p>
+        </div>
+      `;
+
+            fetchBackend(`/character/${charId}`)
+                .then((char) => {
+                    const dob = formatFuzzyDate(char.dateOfBirth);
+                    const appearances = char.media?.edges || [];
+
+                    container.innerHTML = `
+            <div class="p-6 sm:p-8 space-y-6">
+              <div class="flex flex-col sm:flex-row gap-5 items-start">
+                <img src="${char.image?.large || ''}" alt="${escapeHtml(char.name.full)}" class="w-32 sm:w-40 rounded-2xl border border-borderDark shadow-xl shrink-0 bg-obsidian" />
+                <div class="space-y-2 flex-1">
+                  <h2 class="text-2xl font-extrabold text-white">${escapeHtml(char.name.full)}</h2>
+                  ${char.name.native ? `<p class="text-xs font-mono text-slate-400">${escapeHtml(char.name.native)}</p>` : ''}
+                  ${char.name.alternative?.length ? `<p class="text-xs text-slate-400">Aliases: ${escapeHtml(char.name.alternative.join(', '))}</p>` : ''}
+
+                  <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2">
+                    <div class="bg-obsidian border border-borderDark rounded-xl p-2.5">
+                      <span class="text-[10px] uppercase text-slate-400 block">Birthday</span>
+                      <span class="text-xs font-bold text-white">${dob}</span>
+                    </div>
+                    <div class="bg-obsidian border border-borderDark rounded-xl p-2.5">
+                      <span class="text-[10px] uppercase text-slate-400 block">Gender</span>
+                      <span class="text-xs font-bold text-white">${escapeHtml(char.gender || 'Unknown')}</span>
+                    </div>
+                    <div class="bg-obsidian border border-borderDark rounded-xl p-2.5">
+                      <span class="text-[10px] uppercase text-slate-400 block">Age</span>
+                      <span class="text-xs font-bold text-white">${escapeHtml(char.age || 'Unknown')}</span>
+                    </div>
+                    <div class="bg-obsidian border border-borderDark rounded-xl p-2.5">
+                      <span class="text-[10px] uppercase text-slate-400 block">Blood Type</span>
+                      <span class="text-xs font-bold text-white">${escapeHtml(char.bloodType || 'Unknown')}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <h3 class="text-sm font-bold text-white uppercase tracking-wider">Biography & Background (Hover shaded blocks for spoilers)</h3>
+                <div class="text-sm text-slate-300 leading-relaxed bg-obsidian/70 border border-borderDark rounded-xl p-4 max-h-60 overflow-y-auto">
+                  ${cleanDescription(char.description)}
+                </div>
+              </div>
+
+              ${appearances.length > 0 ? `
+                <div class="space-y-2.5">
+                  <h3 class="text-sm font-bold text-white uppercase tracking-wider">Anime & Manga Appearances & Voice Actors</h3>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    ${appearances.map(edge => {
+                        const animeTitle = edge.node?.title?.english || edge.node?.title?.romaji || 'Title';
+                        const jpVa = edge.voiceActors?.find(v => v.languageV2 === 'Japanese')?.name?.full;
+                        const enVa = edge.voiceActors?.find(v => v.languageV2 === 'English')?.name?.full;
+                        return `
+                        <div onclick="closeCharModal(); openAnimeModal(${edge.node.id}, false, '${edge.node.type || 'ANIME'}')" class="flex items-center gap-3 p-2.5 rounded-xl bg-obsidian border border-borderDark hover:border-cyan-500/50 cursor-pointer transition">
+                          <img src="${edge.node?.coverImage?.medium || ''}" alt="" class="w-10 h-14 rounded object-cover shrink-0" />
+                          <div class="min-w-0 flex-1">
+                            <h4 class="text-xs font-bold text-white truncate">${escapeHtml(animeTitle)}</h4>
+                            <span class="text-[10px] text-cyan-400 block">${escapeHtml(edge.characterRole || 'MAIN')} • ${edge.node?.type || 'ANIME'} (${edge.node?.seasonYear || 'TBA'})</span>
+                            ${jpVa ? `<span class="text-[10px] text-slate-400 block truncate">JP CV: ${escapeHtml(jpVa)}</span>` : ''}
+                            ${enVa ? `<span class="text-[10px] text-slate-500 block truncate">EN CV: ${escapeHtml(enVa)}</span>` : ''}
+                          </div>
+                        </div>
+                      `;
+                    }).join('')}
+                  </div>
+                </div>
+              ` : ''}
+            </div>
+          `;
+                })
+                .catch(() => {
+                    container.innerHTML = `<div class="p-8 text-center text-slate-400">Could not load character details right now.</div>`;
+                });
+        }
+
+        function closeCharModal() {
+            document.getElementById('char-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // =========================================================================
+        // INITIALIZATION & EVENT LISTENERS
+        // =========================================================================
+        function debounce(fn, delay = 400) {
+            let timer;
+            return (...args) => {
+                clearTimeout(timer);
+                timer = setTimeout(() => fn(...args), delay);
+            };
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            populateYearFilter();
+            buildAlphabetBar();
+
+            document.getElementById('enc-search').addEventListener('input', debounce((e) => {
+                state.enc.search = e.target.value.trim();
+                loadEncyclopedia(true);
+            }, 450));
+
+            document.getElementById('enc-sort').addEventListener('change', (e) => {
+                state.enc.sort = e.target.value;
+                loadEncyclopedia(true);
+            });
+
+            document.getElementById('enc-genre').addEventListener('change', (e) => {
+                state.enc.genre = e.target.value;
+                loadEncyclopedia(true);
+            });
+
+            document.getElementById('enc-year').addEventListener('change', (e) => {
+                state.enc.year = e.target.value;
+                loadEncyclopedia(true);
+            });
+
+            document.getElementById('manga-search').addEventListener('input', debounce((e) => {
+                state.manga.search = e.target.value.trim();
+                loadManga(true);
+            }, 450));
+
+            document.getElementById('manga-sort').addEventListener('change', (e) => {
+                state.manga.sort = e.target.value;
+                loadManga(true);
+            });
+
+            document.getElementById('manga-genre').addEventListener('change', (e) => {
+                state.manga.genre = e.target.value;
+                loadManga(true);
+            });
+
+            document.getElementById('manga-format').addEventListener('change', (e) => {
+                state.manga.format = e.target.value;
+                loadManga(true);
+            });
+
+            document.getElementById('char-search').addEventListener('input', debounce((e) => {
+                state.char.search = e.target.value.trim();
+                if (state.char.search) {
+                    state.char.letter = '';
+                    document.getElementById('char-active-filter-label').textContent = `Search Results for: "${state.char.search}"`;
+                }
+                loadCharacters(true);
+            }, 450));
+
+            document.getElementById('anime-modal').addEventListener('click', (e) => {
+                if (e.target.id === 'anime-modal') closeAnimeModal();
+            });
+            document.getElementById('char-modal').addEventListener('click', (e) => {
+                if (e.target.id === 'char-modal') closeCharModal();
+            });
+
+            loadEncyclopedia(true);
+        });
+    </script>
+</body>
+
+</html>
