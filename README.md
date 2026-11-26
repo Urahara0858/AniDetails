@@ -1,1 +1,1 @@
-# aniwiki-
+# AniDetails-
